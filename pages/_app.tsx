@@ -1,13 +1,15 @@
-import { Analytics } from "@vercel/analytics/react";
 import type { AppProps } from "next/app";
+import DefaultLayout from "../layout/DefaultLayout";
 import "../styles/globals.css";
+import { ThemeProvider } from "next-themes";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <>
-      <Component {...pageProps} />
-      <Analytics />
-    </>
+    <ThemeProvider defaultTheme="light" enableSystem attribute="class">
+      <DefaultLayout>
+        <Component {...pageProps} />
+      </DefaultLayout>
+    </ThemeProvider>
   );
 }
 

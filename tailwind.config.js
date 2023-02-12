@@ -5,11 +5,32 @@ module.exports = {
   },
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
+    "./layout/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
     "./app/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        // primary: "#6D5DED",
+        primary: "#33CC99",
+        'primary-bold': "#035663",
+        dark: "#121826",
+        "txt-main": "#333333",
+        "input-bg": "#F4F4F6",
+        "txt-white": "#ECECF1",
+        active: "#72728F"
+      },
+      
+    },
   },
-  plugins: [require("@tailwindcss/forms"), require("@headlessui/tailwindcss")],
+  plugins: [
+    require("@tailwindcss/forms"),
+    // require("@headlessui/tailwindcss"),
+    require("daisyui"),
+  ],
+  daisyui: {
+    themes: ["dark"],
+  },
+  darkMode: "class",
 };
