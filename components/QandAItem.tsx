@@ -32,7 +32,7 @@ const QandAItem = (props: {
             </>
           )}
 
-          {!isChat ? <div className="avatar">{icons.logo}</div> : null}
+          {!isChat ? <div className="avatar">{icons.userIcon}</div> : null}
         </div>
       </div>
     </>
