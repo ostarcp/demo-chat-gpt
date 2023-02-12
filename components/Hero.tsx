@@ -6,7 +6,7 @@ function Hero() {
     <>
       <div className="w-full md:max-w-2xl lg:max-w-3xl md:h-full md:flex md:flex-col px-6 items-center">
         <h1
-          className={`my-14 text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-bold`}
+          className={`my-14 text-center text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-bold`}
         >
           ChatDemo
         </h1>

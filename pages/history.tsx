@@ -34,7 +34,7 @@ const History: NextPage = () => {
 
         <div className="m-auto max-w-[50rem]">
           <Input />
-          <Toolbar />
+          {/* <Toolbar /> */}
         </div>
       </div>
     </div>

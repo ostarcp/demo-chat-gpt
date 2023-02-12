@@ -13,7 +13,7 @@ const QandAItem = (props: {
           isChat ? "justify-start" : "justify-end"
         }`}
       >
-        <div className="flex text-txt-main w-2/3 justify-between gap-4 border border-primary rounded-md p-4">
+        <div className="flex flex-wrap text-txt-main md:w-2/3 w-full justify-between gap-4 border border-primary rounded-md p-4">
           {isChat ? (
             <>
               <div className="avatar">{icons.logo}</div>
