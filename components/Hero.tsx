@@ -34,7 +34,7 @@ function Hero() {
           <div className="flex flex-col mb-8 md:mb-auto gap-3.5 flex-1 text-txt-main">
             <h2 className="flex gap-3 items-center m-auto text-lg font-normal md:flex-col md:gap-2">
               {icons.lighning}
-              Limitations
+              Limitation
             </h2>
 
             <ul className="flex flex-col gap-3.5 w-full sm:max-w-md m-auto text-sm">
