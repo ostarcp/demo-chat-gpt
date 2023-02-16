@@ -18,13 +18,13 @@ const Home: NextPage = () => {
 
   const askTheAI = async () => {
 
-    if(!text && !text.trim()) return;
+    if(!text && !text?.trim()) return;
 
     setText("");
     const id = new Date().getTime();
     setQandA((pre: any) => [...pre, { id: id, q: text, a: "" }]);
 
-    const response = await fetch("/api/hello", {
+    const response = await fetch("/api/generate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -46,23 +46,23 @@ const Home: NextPage = () => {
       return;
     }
 
-    // const reader = data.getReader();
-    // const decoder = new TextDecoder();
-    // let done = false;
+    const reader = data.getReader();
+    const decoder = new TextDecoder();
+    let done = false;
 
-    // while (!done) {
-    //   const { value, done: doneReading } = await reader.read();
-    //   done = doneReading;
-    //   const chunkValue = decoder.decode(value);
-    //   setQandA((prev: any) => {
-    //     const preCopy = structuredClone(prev);
-    //     const idx = preCopy.findIndex((item: any) => item.id === id);
+    while (!done) {
+      const { value, done: doneReading } = await reader.read();
+      done = doneReading;
+      const chunkValue = decoder.decode(value);
+      setQandA((prev: any) => {
+        const preCopy = structuredClone(prev);
+        const idx = preCopy.findIndex((item: any) => item.id === id);
 
-    //     preCopy[idx].a = preCopy[idx].a + chunkValue;
+        preCopy[idx].a = preCopy[idx].a + chunkValue;
 
-    //     return preCopy;
-    //   });
-    // }
+        return preCopy;
+      });
+    }
   };
 
   return (
