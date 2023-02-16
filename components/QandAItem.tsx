@@ -1,3 +1,4 @@
+import React from 'react';
 import { icons } from "../utils/icons";
 import PreviewCode from "./PreViewCode";
 
@@ -37,4 +38,4 @@ const QandAItem = (props: {
   );
 };
 
-export default QandAItem;
+export default React.memo(QandAItem);
