@@ -1,7 +1,7 @@
 import { OpenAIStream, OpenAIStreamPayload } from "../../utils/OpenAIStream";
 
 if (!process.env.OPENAI_API_KEY) {
-  throw new Error("Missing env var from OpenAI", { status: 401 });
+  throw new Response("Missing env var from OpenAI", { status: 401 });
 }
 
 export const config = {
