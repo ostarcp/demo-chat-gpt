@@ -54,9 +54,7 @@ const Home: NextPage = () => {
         const preCopy = structuredClone(prev);
         const idx = preCopy.findIndex((item: any) => item.id === id);
 
-        if (idx != -1) {
-          preCopy[idx].a = preCopy[idx].a + chunkValue;
-        }
+        preCopy[idx].a = preCopy[idx].a + chunkValue;
 
         return preCopy;
       });

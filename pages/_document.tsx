@@ -6,16 +6,16 @@ class MyDocument extends Document {
       <Html lang="en">
         <Head>
           <link rel="icon" href="/favicon.ico" />
-          <meta name="description" content="UP2GPT." />
+          <meta name="description" content="U2Chat." />
           <meta property="og:site_name" content="chatai.com" />
           <meta
             property="og:description"
-            content="Generate your next UP2GPT bio in seconds."
+            content="Generate your next U2Chat bio in seconds."
           />
-          <meta property="og:title" content="UP2GPT" />
+          <meta property="og:title" content="U2Chat" />
           <meta name="chat:card" content="summary_large_image" />
-          <meta name="chat:title" content="UP2GPT" />
-          <meta name="twitter:description" content="UP2GPT" />
+          <meta name="chat:title" content="U2Chat" />
+          <meta name="twitter:description" content="U2Chat" />
           {/* <meta
             property="og:image"
             content="https://twitterbio.com/og-image.png"

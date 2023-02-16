@@ -8,7 +8,7 @@ function Hero() {
         <h1
           className={`my-14 text-center text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-bold`}
         >
-          UP2GPT
+          U2Chat
         </h1>
 
         <div className="md:flex items-start text-center gap-3.5 text-txt-main">
