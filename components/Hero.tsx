@@ -8,7 +8,7 @@ function Hero() {
         <h1
           className={`my-14 text-center text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-bold`}
         >
-          ChatDemo
+          UP2GPT
         </h1>
 
         <div className="md:flex items-start text-center gap-3.5 text-txt-main">
@@ -19,13 +19,13 @@ function Hero() {
             </h2>
 
             <ul className="flex flex-col gap-3.5 w-full sm:max-w-md m-auto text-sm">
-              <button className="w-full p-2 rounded-md bg-input-bg">
+              <button className="w-full p-2 rounded-md bg-input-bg hover:bg-gray-300">
                 "Explain quantum computing in simple terms" →
               </button>
-              <button className="w-full p-2 rounded-md bg-input-bg">
+              <button className="w-full p-2 rounded-md bg-input-bg hover:bg-gray-300">
                 "Got any creative ideas for a 10 year old's birthday?" →
               </button>
-              <button className="w-full p-2 rounded-md bg-input-bg">
+              <button className="w-full p-2 rounded-md bg-input-bg hover:bg-gray-300">
                 "How do I make an HTTP request in Javascript?" →
               </button>
             </ul>

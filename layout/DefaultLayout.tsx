@@ -21,7 +21,7 @@ const DefaultLayout: React.FC<DefaultLayoutI> = ({ children }) => {
             </div>
             <img className="w-8" src="../avatar.png" />
           </div>
-          <main className="w-full">{children}</main>
+          <main className="w-full h-full">{children}</main>
         </div>
         <NavBar />
       </div>

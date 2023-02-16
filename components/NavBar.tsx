@@ -29,7 +29,7 @@ export default function NavBar() {
           <Link href={"/"}>
             <div className="logo mb-14 cursor-pointer">{icons.logo}</div>
           </Link>
-          <div className="overflow-y-auto h-48">
+          {/* <div className="overflow-y-auto h-48">
             <li>
               <a
                 href="/history"
@@ -48,16 +48,18 @@ export default function NavBar() {
               <a className={LI_STYLE}>{icons.messageNav}Library</a>
             </li>
           </div>
-          <div className="mt-8" />
+          <div className="mt-8" /> */}
 
           <Link href={"/"}>
             <Button title="New chat" icon={icons.plusIcon} />
           </Link>
-          
+
           <div className="divider"></div>
 
           <li>
-            <a className={LI_STYLE}>{icons.trash}Clear conversation</a>
+            <a className={LI_STYLE} onClick={() => route.reload()}>
+              {icons.trash}Clear conversation
+            </a>
             <a className={LI_STYLE} onClick={setAppTheme}>
               {icons.dark}Dark mode
             </a>

@@ -3,9 +3,9 @@ import PreviewCode from "./PreViewCode";
 
 const QandAItem = (props: {
   isChat?: boolean;
-  question?: string;
+  content?: string;
 }): JSX.Element => {
-  const { isChat = true, question } = props;
+  const { isChat = true, content } = props;
   return (
     <>
       <div
@@ -17,17 +17,15 @@ const QandAItem = (props: {
           {isChat ? (
             <>
               <div className="avatar">{icons.logo}</div>
-              <div className="content-text">
-                {question ||
-                  "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsam quasi ipsum vel unde, ut deserunt at esse quod, odio consectetur cum autem quidem labore expedita repudiandae eius? Accusantium, voluptates impedit!"}
-                <PreviewCode language="JavaScript" />
+              <div className="flex-1 content-text overflow-x-auto text-left">
+                {content}
+                {/* <PreviewCode language="JavaScript" /> */}
               </div>
             </>
           ) : (
             <>
-              <div className="content-text">
-                {question ||
-                  "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsam quasi ipsum vel unde, ut deserunt at esse quod, odio consectetur cum autem quidem labore expedita repudiandae eius? Accusantium, voluptates impedit!"}
+              <div className="flex-1 content-text overflow-x-auto text-left">
+                {content || ""}
               </div>
             </>
           )}

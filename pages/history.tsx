@@ -1,16 +1,84 @@
+import { log } from "console";
 import type { NextPage } from "next";
+import {
+  ChangeEventHandler,
+  HTMLInputTypeAttribute,
+  useReducer,
+  useState,
+} from "react";
 import Input from "../components/Input";
 import QandAItem from "../components/QandAItem";
 import Toolbar from "../components/Toolbars";
 
 const History: NextPage = () => {
+  const [text, setText] = useState("");
+  const [qAndA, setQandA] = useState<any>([]);
+  // const [state, dispatch] = useReducer(reducer, initialState);
+
+  const onChangeText = (e: any) => {
+    const txt = e.target.value;
+    setText(txt);
+  };
+
+  const askTheAI = async () => {
+    setText("");
+    const id = new Date().getTime();
+    setQandA((pre: any) => [...pre, { id: id, q: text, a: "" }]);
+
+    const response = await fetch("/api/generate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        prompt: text,
+      }),
+    });
+    console.log("Edge function returned.");
+
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+
+    // This data is a ReadableStream
+    const data = response.body;
+    console.log(data);
+
+    if (!data) {
+      return;
+    }
+
+    const reader = data.getReader();
+    const decoder = new TextDecoder();
+    let done = false;
+
+    while (!done) {
+      const { value, done: doneReading } = await reader.read();
+      done = doneReading;
+      const chunkValue = decoder.decode(value);
+      setQandA((prev: any) => {
+        const preCopy = structuredClone(prev);
+        const idx = preCopy.findIndex((item: any) => item.id === id);
+        preCopy[idx].a = preCopy[idx].a + chunkValue;
+
+        return preCopy;
+      });
+    }
+  };
+
   return (
     <div className="flex flex-col items-center p-4">
-      <QandAItem isChat={false} />
-      <QandAItem isChat={true} />
+      {qAndA?.map?.((item: any, index: any) => {
+        return (
+          <>
+            <QandAItem isChat={false} content={item?.q || ""} />
+            <QandAItem isChat content={item?.a || ""} />
+          </>
+        );
+      })}
 
       <div className="w-full mb-4 bg-white sticky -bottom-4 p-4">
-        <div className="flex ml-1 mt-1.5 md:w-full md:m-auto md:mb-2 gap-0 md:gap-2 justify-center">
+        {/* <div className="flex ml-1 mt-1.5 md:w-full md:m-auto md:mb-2 gap-0 md:gap-2 justify-center">
           <button className="btn bg-input-bg border-none hover:bg-primary text-txt-main flex justify-center gap-2 btn-neutral border-0 md:border">
             <svg
               stroke="currentColor"
@@ -30,11 +98,10 @@ const History: NextPage = () => {
             </svg>
             Regenerate response
           </button>
-        </div>
+        </div> */}
 
         <div className="m-auto max-w-[50rem]">
-          <Input />
-          {/* <Toolbar /> */}
+          <Input value={text} onChangeText={onChangeText} onClick={askTheAI} />
         </div>
       </div>
     </div>
