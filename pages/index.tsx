@@ -32,6 +32,7 @@ const Home: NextPage = () => {
     });
 
     if (!response.ok) {
+      console.log('response.statusText', response.statusText);
       throw new Error(response.statusText);
     }
 
