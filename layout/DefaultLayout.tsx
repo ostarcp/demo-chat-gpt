@@ -8,7 +8,6 @@ interface DefaultLayoutI {
 }
 
 const DefaultLayout: React.FC<DefaultLayoutI> = ({ children }) => {
-
   return (
     <div className="dark:bg-dark bg-white">
       <div className="drawer drawer-mobile">
@@ -23,7 +22,8 @@ const DefaultLayout: React.FC<DefaultLayoutI> = ({ children }) => {
             </div>
             <img className="w-8" src="../avatar.png" />
           </div>
-          <main className="w-full h-full">{children}</main>
+
+          <main className="w-full">{children}</main>
         </div>
         <NavBar />
       </div>

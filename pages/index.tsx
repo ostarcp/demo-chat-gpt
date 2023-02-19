@@ -11,10 +11,8 @@ const Home: NextPage = () => {
   const [loading, setLoading] = useState(false);
   const [text, setText] = useState("");
   const [qAndA, setQandA] = useState<any[]>([]);
-  const { store,setStore } = useStoreContext();
+  // const { store, setStore } = useStoreContext();
 
-  console.log(store);
-  
 
   const isEmptyQandA = qAndA?.length === 0;
 
@@ -87,20 +85,26 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center px-4 ">
-      {isEmptyQandA && <Hero />}
-      <div className="my-8" />
+    <div className="flex flex-col items-center px-4">
+      {isEmptyQandA ? (
+        <>
+          <Hero />
+          <div className="my-8" />
+        </>
+      ) : null}
 
-      {qAndA?.map?.((item: any, index: any) => {
-        return (
-          <div className="w-full" key={`key-${item?.id}-${index}`}>
-            <QandAItem isChat={false} content={item?.q || ""} />
-            <QandAItem isChat content={item?.a || ""} />
-          </div>
-        );
-      })}
+      <div className="w-full max-h-[36rem] overflow-y-auto">
+        {qAndA?.map?.((item: any, index: any) => {
+          return (
+            <div className="w-full" key={`key-${item?.id}-${index}`}>
+              <QandAItem isChat={false} content={item?.q || ""} />
+              <QandAItem isChat content={item?.a || ""} />
+            </div>
+          );
+        })}
+      </div>
 
-      <div className="w-full bg-white absolute bottom-4 p-4">
+      <div className="w-full bg-white absolute bottom-10">
         {/* <ButtonResetRespone /> */}
         <div className="m-auto max-w-[50rem]">
           <Input

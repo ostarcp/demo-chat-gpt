@@ -16,7 +16,7 @@ const Input = (props: {
   };
 
   return (
-    <div className="flex flex-col w-full py-2 flex-grow md:py-3 md:pl-4 relative dark:bg-gray-700 bg-white border border-primary  dark:text-white rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]">
+    <div className={` flex flex-col w-full py-2 flex-grow md:py-3 md:pl-4 relative dark:bg-gray-700 ${props.isLoading ? "bg-gray-100" : "bg-white"} border border-primary  dark:text-white rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]`}>
       <textarea
         onKeyUp={onEnter}
         disabled={props.isLoading}
