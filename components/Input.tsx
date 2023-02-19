@@ -1,6 +1,8 @@
 import { icons } from "../utils/icons";
+import LoadingDots from "./LoadingDots";
 
 const Input = (props: {
+  isLoading?: boolean;
   value: any;
   onChangeText: (e: any) => void;
   onClick: () => void;
@@ -8,6 +10,7 @@ const Input = (props: {
   const onEnter = (e: any) => {
     const key = e.key || "";
     if (key === "Enter") {
+      e.preventDefault();
       props.onClick();
     }
   };
@@ -16,6 +19,7 @@ const Input = (props: {
     <div className="flex flex-col w-full py-2 flex-grow md:py-3 md:pl-4 relative dark:bg-gray-700 bg-white border border-primary  dark:text-white rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]">
       <textarea
         onKeyUp={onEnter}
+        disabled={props.isLoading}
         value={props.value}
         onChange={props.onChangeText}
         tabIndex={0}
@@ -33,7 +37,7 @@ const Input = (props: {
         onClick={props.onClick}
         className="absolute p-1 rounded-md text-gray-500 bottom-1.5 right-1 md:bottom-2.5 md:right-2 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"
       >
-        {icons.sendChat}
+        {props.isLoading ? <LoadingDots color="#33CC99" /> : icons.sendChat}
       </button>
     </div>
   );

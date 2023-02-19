@@ -6,6 +6,7 @@ import QandAItem from "../components/QandAItem";
 import Toolbar from "../components/Toolbars";
 
 const Home: NextPage = () => {
+  const [loading, setLoading] = useState(false);
   const [text, setText] = useState("");
   const [qAndA, setQandA] = useState<any[]>([]);
 
@@ -17,10 +18,10 @@ const Home: NextPage = () => {
   };
 
   const askTheAI = async () => {
-
-    if(!text && !text?.trim()) return;
+    if (!text && !text?.trim()) return;
 
     setText("");
+    setLoading(true);
     const id = new Date().getTime();
     setQandA((pre: any) => [...pre, { id: id, q: text, a: "" }]);
 
@@ -30,12 +31,12 @@ const Home: NextPage = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        prompt: text,
+        prompt: "you are a chat bot and i have the question: " + text,
       }),
     });
 
     if (!response.ok) {
-      console.log('response.statusText', response);
+      console.log("response.statusText", response);
       throw new Error(response.statusText);
     }
 
@@ -63,10 +64,11 @@ const Home: NextPage = () => {
         return preCopy;
       });
     }
+    setLoading(false);
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center px-4 ">
       {isEmptyQandA && <Hero />}
       <div className="my-8" />
 
@@ -79,10 +81,15 @@ const Home: NextPage = () => {
         );
       })}
 
-      <div className="w-full bg-white absolute bottom-5 p-4">
+      <div className="w-full bg-white absolute bottom-4 p-4">
         {/* <ButtonResetRespone /> */}
         <div className="m-auto max-w-[50rem]">
-          <Input value={text} onChangeText={onChangeText} onClick={askTheAI} />
+          <Input
+            value={text}
+            onChangeText={onChangeText}
+            onClick={askTheAI}
+            isLoading={loading}
+          />
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import { icons } from "../utils/icons";
 
-const PreviewCode = (props: { language: string }) => {
-  const { language } = props;
+const PreviewCode = (props: { language: string; code: string }) => {
+  const { language, code } = props;
   return (
     <>
       <div className="bg-dark mb-4 rounded-lg w-full mt-4">
@@ -14,15 +14,7 @@ const PreviewCode = (props: { language: string }) => {
           </div>
         </div>
         <div className="p-4 overflow-y-auto">
-          <code className="!whitespace-pre text-white">
-{`import 'package:rxdart/rxdart.dart';
-final subject = BehaviorSubject<List<int>>(seedValue: []);
-
-void addItemToList(int item) {
-  final currentList = subject.value;
-  subject.add([...currentList, item]);
-}}`}
-          </code>
+          <code className="!whitespace-pre text-white">{code}</code>
         </div>
       </div>
     </>

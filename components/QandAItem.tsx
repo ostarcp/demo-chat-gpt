@@ -4,7 +4,7 @@ import PreviewCode from "./PreViewCode";
 
 const QandAItem = (props: {
   isChat?: boolean;
-  content?: string;
+  content: string;
 }): JSX.Element => {
   const { isChat = true, content } = props;
   return (
@@ -14,13 +14,13 @@ const QandAItem = (props: {
           isChat ? "justify-start" : "justify-end"
         }`}
       >
-        <div className="flex text-txt-main md:w-2/3 w-full justify-between gap-4 border border-primary rounded-md p-4">
+        <div className="flex text-txt-main md:w-3/4 w-full justify-between gap-4 border border-primary rounded-md p-4">
           {isChat ? (
             <>
               <div className="avatar">{icons.logo}</div>
               <div className="flex-1 content-text overflow-x-auto text-left">
                 {content}
-                {/* <PreviewCode language="JavaScript" /> */}
+                {/* <PreviewCode language={"Javascript"} code={content} /> */}
               </div>
             </>
           ) : (
