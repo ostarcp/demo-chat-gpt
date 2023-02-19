@@ -1,23 +1,33 @@
+import { log } from "console";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useState } from "react";
-import { uid } from "uid";
+import { useEffect, useState } from "react";
 import Hero from "../components/Hero";
 import Input from "../components/Input";
 import QandAItem from "../components/QandAItem";
+import Toolbar from "../components/Toolbars";
 import { useStoreContext } from "../providers/StoreProvider";
-
-const PAGE_ID = uid(16);
+import { isEmpty } from "../utils/helper";
 
 const Home: NextPage = () => {
   const [loading, setLoading] = useState(false);
   const [text, setText] = useState("");
   const [qAndA, setQandA] = useState<any[]>([]);
-  const { store, setStore, getStoreVal, updateStoreById } = useStoreContext();
+  const { store, getStoreVal, updateStoreById } = useStoreContext();
   const route = useRouter();
 
+  const ID = (route.query.id as string) || "";
+
   const isNewChat = route.pathname === "/";
-  const isEmptyQandA = qAndA?.length === 0;
+
+  console.log(store);
+
+  useEffect(() => {
+    if (isEmpty(qAndA)) {
+      const data = getStoreVal(ID);
+      setQandA(data?.qAndA);
+    }
+  }, [isEmpty(qAndA), ID]);
 
   const onChangeText = (e: any) => {
     const txt = e.target.value;
@@ -92,13 +102,11 @@ const Home: NextPage = () => {
         });
       }
 
-      if (!isNewChat) return;
-
-      if (Boolean(getStoreVal(PAGE_ID))) {
-        updateStoreById(PAGE_ID, [...qAndA, qAndAObj]);
+      if (Boolean(getStoreVal(ID))) {
+        updateStoreById(ID, [...qAndA, qAndAObj]);
         return;
       }
-      setStore([...store, { id: PAGE_ID, qAndA: [...qAndA, qAndAObj] }]);
+      
     } catch (error) {
     } finally {
       setLoading(false);
@@ -107,13 +115,6 @@ const Home: NextPage = () => {
 
   return (
     <div className="flex flex-col items-center px-4">
-      {isEmptyQandA ? (
-        <>
-          <Hero />
-          <div className="my-8" />
-        </>
-      ) : null}
-
       <div className="w-full max-h-[36rem] overflow-y-auto">
         {qAndA?.map?.((item: any, index: any) => {
           const isLoading = loading && index + 1 === qAndA.length;

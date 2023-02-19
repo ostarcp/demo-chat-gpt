@@ -17,9 +17,12 @@ const DefaultLayout: React.FC<DefaultLayoutI> = ({ children }) => {
             className={"w-full mt-4 flex items-center"}
             style={{ justifyContent: "space-between" }}
           >
-            <div className="btn border-non text-txt-main lg:invisible visible">
-              <label htmlFor="my-drawer-2">{icons.tune}</label>
-            </div>
+            <label htmlFor="my-drawer-2">
+              <div className="btn border-non text-txt-main lg:invisible visible">
+                {icons.tune}
+              </div>
+            </label>
+
             <img className="w-8" src="../avatar.png" />
           </div>
 

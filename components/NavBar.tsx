@@ -9,13 +9,12 @@ import Button from "./Button";
 const LI_STYLE = "text-txt-white my-2 -ml-2 text-sm font-medium";
 
 export default function NavBar() {
-  const { store, setStore } = useStoreContext();
+  const { store, deleteStore } = useStoreContext();
 
   const { setTheme, theme } = useTheme();
   const route = useRouter();
-  // console.log(route);
 
-  const isActive = route.pathname === "/history";
+  const isHome = route.pathname === "/";
 
   const themeSetting = theme === "dark" ? "light" : "dark";
 
@@ -34,9 +33,14 @@ export default function NavBar() {
           </Link>
           <div className="overflow-y-auto h-fit">
             {store.map((item) => (
-              <li>
-                <a href="/" className={`${LI_STYLE}`}>
-                  {icons.messageNav} Create User flow
+              <li key={`${item.id}-link-a`}>
+                <a
+                  href={`/${item.id}`}
+                  className={`${LI_STYLE} ${
+                    route?.query?.id === item?.id ? "bg-active" : null
+                  }`}
+                >
+                  {icons.messageNav} {item?.qAndA?.[0]?.q}
                 </a>
               </li>
             ))}
@@ -67,7 +71,13 @@ export default function NavBar() {
           <div className="divider"></div>
 
           <li>
-            <a className={LI_STYLE} onClick={() => route.reload()}>
+            <a
+              className={LI_STYLE}
+              onClick={() => {
+                deleteStore();
+                !isHome ? route.push("/") : route.reload();
+              }}
+            >
               {icons.trash}Clear conversation
             </a>
             <a className={LI_STYLE} onClick={setAppTheme}>

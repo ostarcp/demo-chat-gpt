@@ -1,12 +1,14 @@
-import React from 'react';
+import React from "react";
 import { icons } from "../utils/icons";
 import PreviewCode from "./PreViewCode";
+import styles from "../styles/typing.module.css";
 
 const QandAItem = (props: {
   isChat?: boolean;
+  isLoading?: boolean;
   content: string;
 }): JSX.Element => {
-  const { isChat = true, content } = props;
+  const { isChat = true, content, isLoading } = props;
   return (
     <>
       <div
@@ -18,14 +20,26 @@ const QandAItem = (props: {
           {isChat ? (
             <>
               <div className="avatar">{icons.logo}</div>
-              <div className="flex-1 content-text overflow-x-auto text-left">
-                {content}
+              <div
+                className={`flex-1 content-text overflow-x-auto text-left dark:text-white ${
+                  isLoading ? styles.typewriter : ""
+                }`}
+              >
+                <span
+                  className={
+                    content === "ERROR! please try again later"
+                      ? "text-red-500 uppercase font-bold"
+                      : ""
+                  }
+                >
+                  {content}
+                </span>
                 {/* <PreviewCode language={"Javascript"} code={content} /> */}
               </div>
             </>
           ) : (
             <>
-              <div className="flex-1 content-text overflow-x-auto text-left">
+              <div className="flex-1 content-text overflow-x-auto text-left dark:text-white">
                 {content || ""}
               </div>
             </>
