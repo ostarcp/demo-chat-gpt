@@ -1,14 +1,20 @@
+import { log } from "console";
 import type { NextPage } from "next";
 import { useState } from "react";
 import Hero from "../components/Hero";
 import Input from "../components/Input";
 import QandAItem from "../components/QandAItem";
 import Toolbar from "../components/Toolbars";
+import { useStoreContext } from "../providers/StoreProvider";
 
 const Home: NextPage = () => {
   const [loading, setLoading] = useState(false);
   const [text, setText] = useState("");
   const [qAndA, setQandA] = useState<any[]>([]);
+  const { store,setStore } = useStoreContext();
+
+  console.log(store);
+  
 
   const isEmptyQandA = qAndA?.length === 0;
 
@@ -18,14 +24,19 @@ const Home: NextPage = () => {
   };
 
   const askTheAI = async () => {
-    // if (!text && !text?.trim()) return;
-
+    if (!text && !text?.trim()) return;
     setText("");
     setLoading(true);
-    const id = new Date().getTime();
-    setQandA((pre: any) => [...pre, { id: id, q: text, a: "" }]);
 
     try {
+      const qAndAObj = {
+        id: new Date().getTime(),
+        q: text,
+        a: "",
+      };
+
+      setQandA((pre: any) => [...pre, qAndAObj]);
+
       const response = await fetch("/api/generate", {
         method: "POST",
         headers: {
@@ -36,41 +47,43 @@ const Home: NextPage = () => {
         }),
       });
 
-      console.log("response", response.body);
-      console.log("response", response.body?.getReader());
+      if (!response.ok) {
+        console.log("response.statusText", response);
+        throw new Error(response.statusText);
+      }
+
+      // This data is a ReadableStream
+      const data = response.body;
+
+      if (!data) {
+        return;
+      }
+
+      const reader = data.getReader();
+      const decoder = new TextDecoder();
+      let done = false;
+
+      while (!done) {
+        const { value, done: doneReading } = await reader.read();
+        done = doneReading;
+        const chunkValue = decoder.decode(value);
+        setQandA((prev: any) => {
+          const preCopy = structuredClone(prev);
+          const idx = preCopy.findIndex(
+            (item: any) => item.id === qAndAObj?.id
+          );
+
+          preCopy[idx].a = preCopy[idx].a + chunkValue;
+
+          return preCopy;
+        });
+      }
+
+      // setStore(qAndA);
     } catch (error) {
-      console.log("err", error);
+    } finally {
+      setLoading(false);
     }
-    // if (!response.ok) {
-    //   console.log("response.statusText", response);
-    //   throw new Error(response.statusText);
-    // }
-
-    // // This data is a ReadableStream
-    // const data = response.body;
-
-    // if (!data) {
-    //   return;
-    // }
-
-    // const reader = data.getReader();
-    // const decoder = new TextDecoder();
-    // let done = false;
-
-    // while (!done) {
-    //   const { value, done: doneReading } = await reader.read();
-    //   done = doneReading;
-    //   const chunkValue = decoder.decode(value);
-    //   setQandA((prev: any) => {
-    //     const preCopy = structuredClone(prev);
-    //     const idx = preCopy.findIndex((item: any) => item.id === id);
-
-    //     preCopy[idx].a = preCopy[idx].a + chunkValue;
-
-    //     return preCopy;
-    //   });
-    // }
-    setLoading(false);
   };
 
   return (

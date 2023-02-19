@@ -1,28 +1,36 @@
-import React, { createContext, ReactNode, useRef } from "react";
+import React, { createContext, ReactNode, useRef, useState } from "react";
 
-type Props = {};
+type Props = {
+  setStore: (data: any) => void;
+  store: {
+    q: string;
+    a: string;
+  }[];
+};
 
-export const StoreContext = createContext<any>({
+export const StoreContext = createContext<Props>({
   setStore: () => {},
-  getStore: () => {},
+  store: [],
 });
 
 export const useStoreContext = () => React.useContext(StoreContext);
 
-const CacheManageProvider = ({ children }: { children: ReactNode }) => {
+const StoreProvider = ({ children }: { children: ReactNode }) => {
   //! State
-  const cacheStorage = useRef<any>(null);
+  const [storeData, setStoreData] = useState<any[]>([]);
 
-  const setStore = (data: any) => {};
+  const setStore = (data: any) => {
+    setStoreData([...storeData, ...data]);
+  };
 
-  const getStore = React.useCallback(() => {}, []);
+  // const getStore = React.useCallback(() => {}, []);
 
   const value: any = React.useMemo(() => {
     return {
+      store: storeData,
       setStore,
-      getStore,
     };
-  }, [setStore, getStore]);
+  }, [setStore, storeData]);
 
   //! Return
   return (
@@ -30,4 +38,4 @@ const CacheManageProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export default CacheManageProvider;
+export default StoreProvider;

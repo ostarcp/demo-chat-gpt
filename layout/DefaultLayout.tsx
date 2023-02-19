@@ -1,12 +1,14 @@
 import React, { ReactElement } from "react";
 import Button from "../components/Button";
 import NavBar from "../components/NavBar";
+import { useStoreContext } from "../providers/StoreProvider";
 import { icons } from "../utils/icons";
 interface DefaultLayoutI {
   children: ReactElement;
 }
 
 const DefaultLayout: React.FC<DefaultLayoutI> = ({ children }) => {
+
   return (
     <div className="dark:bg-dark bg-white">
       <div className="drawer drawer-mobile">
@@ -29,4 +31,4 @@ const DefaultLayout: React.FC<DefaultLayoutI> = ({ children }) => {
   );
 };
 
-export default DefaultLayout;
+export default React.memo(DefaultLayout);
