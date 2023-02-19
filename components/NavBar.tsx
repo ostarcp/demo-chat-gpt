@@ -32,7 +32,7 @@ export default function NavBar() {
             <div className="logo mb-14 cursor-pointer">{icons.logo}</div>
           </Link>
           <div className="overflow-y-auto h-fit">
-            {store.map((item) => (
+            {store?.map?.((item) => (
               <li key={`${item.id}-link-a`}>
                 <a
                   href={`/${item.id}`}
