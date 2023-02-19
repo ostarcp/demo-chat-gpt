@@ -53,6 +53,7 @@ export async function OpenAIStream(payload: OpenAIStreamPayload) {
             controller.enqueue(queue);
             counter++;
           } catch (e) {
+            console.log(e);
             // maybe parse error
             controller.error(e);
           }

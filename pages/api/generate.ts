@@ -1,7 +1,7 @@
 import { OpenAIStream, OpenAIStreamPayload } from "../../utils/OpenAIStream";
 
 if (!process.env.OPENAI_API_KEY) {
-  throw new Response("Missing env var from OpenAI", { status: 401 });
+  throw new Response("Missing env var from OpenAI");
 }
 
 export const config = {
@@ -24,7 +24,7 @@ const handler = async (req: Request): Promise<Response> => {
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,
-    max_tokens: 200,
+    max_tokens: 100,
     stream: true,
     n: 1,
   };
