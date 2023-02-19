@@ -10,6 +10,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   const [showChild, setShowChild] = useState(false);
 
   useEffect(() => {
+    console.log("version: 1.0.1");
+    
     setShowChild(true);
   }, []);
 
