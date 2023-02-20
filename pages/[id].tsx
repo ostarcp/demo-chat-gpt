@@ -1,7 +1,7 @@
 import { log } from "console";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Hero from "../components/Hero";
 import Input from "../components/Input";
 import QandAItem from "../components/QandAItem";
@@ -15,12 +15,13 @@ const Home: NextPage = () => {
   const [qAndA, setQandA] = useState<any[]>([]);
   const { store, getStoreVal, updateStoreById } = useStoreContext();
   const route = useRouter();
+  const bottomRef = useRef<any>(null);
 
   const ID = (route.query.id as string) || "";
 
-  const isNewChat = route.pathname === "/";
-
-  console.log(store);
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [qAndA?.length]);
 
   useEffect(() => {
     if (isEmpty(qAndA)) {
@@ -82,13 +83,11 @@ const Home: NextPage = () => {
       const reader = data.getReader();
       const decoder = new TextDecoder();
       let done = false;
-      let whoteText = "";
 
       while (!done) {
         const { value, done: doneReading } = await reader.read();
         done = doneReading;
         const chunkValue = decoder.decode(value);
-        whoteText += chunkValue;
         qAndAObj.a += chunkValue;
 
         setQandA((prev: any) => {
@@ -96,7 +95,7 @@ const Home: NextPage = () => {
           const idx = preCopy.findIndex(
             (item: any) => item.id === qAndAObj?.id
           );
-          preCopy[idx].a = preCopy[idx].a + chunkValue;
+          preCopy[idx].a += chunkValue;
 
           return preCopy;
         });
@@ -106,7 +105,6 @@ const Home: NextPage = () => {
         updateStoreById(ID, [...qAndA, qAndAObj]);
         return;
       }
-      
     } catch (error) {
     } finally {
       setLoading(false);
@@ -125,9 +123,10 @@ const Home: NextPage = () => {
             </div>
           );
         })}
+        <div ref={bottomRef} />
       </div>
 
-      <div className="w-full bg-white dark:bg-dark absolute bottom-10">
+      <div className="w-full bg-white dark:bg-dark absolute bottom-10 px-4">
         {/* <ButtonResetRespone /> */}
         <div className="m-auto max-w-[50rem]">
           <Input

@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { uid } from "uid";
 import Hero from "../components/Hero";
 import Input from "../components/Input";
@@ -15,6 +15,11 @@ const Home: NextPage = () => {
   const [qAndA, setQandA] = useState<any[]>([]);
   const { store, setStore, getStoreVal, updateStoreById } = useStoreContext();
   const route = useRouter();
+  const bottomRef = useRef<any>(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [qAndA?.length]);
 
   const isNewChat = route.pathname === "/";
   const isEmptyQandA = qAndA?.length === 0;
@@ -72,13 +77,11 @@ const Home: NextPage = () => {
       const reader = data.getReader();
       const decoder = new TextDecoder();
       let done = false;
-      let whoteText = "";
 
       while (!done) {
         const { value, done: doneReading } = await reader.read();
         done = doneReading;
         const chunkValue = decoder.decode(value);
-        whoteText += chunkValue;
         qAndAObj.a += chunkValue;
 
         setQandA((prev: any) => {
@@ -86,7 +89,7 @@ const Home: NextPage = () => {
           const idx = preCopy.findIndex(
             (item: any) => item.id === qAndAObj?.id
           );
-          preCopy[idx].a = preCopy[idx].a + chunkValue;
+          preCopy[idx].a += chunkValue;
 
           return preCopy;
         });
@@ -124,10 +127,10 @@ const Home: NextPage = () => {
             </div>
           );
         })}
+        <div ref={bottomRef} />
       </div>
 
-      <div className="w-full bg-white dark:bg-dark absolute bottom-10">
-        {/* <ButtonResetRespone /> */}
+      <div className="w-full bg-white dark:bg-dark absolute bottom-10 px-4">
         <div className="m-auto max-w-[50rem]">
           <Input
             value={text}

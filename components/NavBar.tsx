@@ -1,7 +1,7 @@
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useStoreContext } from "../providers/StoreProvider";
 import { icons } from "../utils/icons";
 import Button from "./Button";
@@ -10,6 +10,7 @@ const LI_STYLE = "text-txt-white my-2 -ml-2 text-sm font-medium";
 
 export default function NavBar() {
   const { store, deleteStore } = useStoreContext();
+  const [toggleDelete, setToggleDelete] = useState(false);
 
   const { setTheme, theme } = useTheme();
   const route = useRouter();
@@ -21,6 +22,16 @@ export default function NavBar() {
   const setAppTheme = useCallback(() => {
     setTheme(themeSetting);
   }, [themeSetting]);
+
+  const toggleClear = useCallback(() => {
+    setToggleDelete((pre) => !pre);
+  }, []);
+
+  const onClearConversation = useCallback(() => {
+    !isHome ? route.push("/") : route.reload();
+    deleteStore();
+    setToggleDelete(false);
+  }, [isHome, toggleDelete]);
 
   return (
     <>
@@ -44,23 +55,7 @@ export default function NavBar() {
                 </a>
               </li>
             ))}
-            {/* <li>
-              <a
-                href="/history"
-                className={`${LI_STYLE} ${isActive ? "bg-active" : null}`}
-              >
-                {icons.messageNav}Create User flow
-              </a>
-            </li>
-            <li>
-              <a className={LI_STYLE}>{icons.messageNav}Design strategy</a>
-            </li>
-            <li>
-              <a className={LI_STYLE}>{icons.messageNav}Roadmap</a>
-            </li>
-            <li>
-              <a className={LI_STYLE}>{icons.messageNav}Library</a>
-            </li> */}
+            
           </div>
           <div className="mt-8" />
 
@@ -71,15 +66,16 @@ export default function NavBar() {
           <div className="divider"></div>
 
           <li>
-            <a
-              className={LI_STYLE}
-              onClick={() => {
-                deleteStore();
-                !isHome ? route.push("/") : route.reload();
-              }}
-            >
-              {icons.trash}Clear conversation
-            </a>
+            {!toggleDelete ? (
+              <a className={LI_STYLE} onClick={toggleClear}>
+                {icons.trash} {"Clear conversation"}
+              </a>
+            ) : (
+              <li className="flex flex-row justify-evenly p-0">
+                <a className={LI_STYLE} onClick={onClearConversation}>YES</a>
+                <a className={LI_STYLE} onClick={toggleClear}>NO</a>
+              </li>
+            )}
             <a className={LI_STYLE} onClick={setAppTheme}>
               {icons.dark}Dark mode
             </a>

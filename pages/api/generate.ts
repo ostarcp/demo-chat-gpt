@@ -19,7 +19,7 @@ const handler = async (req: Request): Promise<Response> => {
 
   const payload: OpenAIStreamPayload = {
     model: "text-davinci-003",
-    prompt,
+    prompt: "You are chat bot and i have some question like: " + prompt,
     temperature: 0.7,
     top_p: 1,
     frequency_penalty: 0,
