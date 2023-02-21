@@ -19,7 +19,8 @@ module.exports = {
         "txt-main": "#333333",
         "input-bg": "#F4F4F6",
         "txt-white": "#ECECF1",
-        active: "#72728F"
+        active: "#72728F",
+        'main-bg':"#F7F7F7"
       },
       
     },

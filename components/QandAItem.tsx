@@ -13,9 +13,9 @@ const QandAItem = (props: {
     <>
       <div
         className={`w-full flex ${
-          isChat ? "justify-start" : "justify-end"
+          isChat ? "justify-start bg-main-bg dark:bg-dark" : "justify-end"
         }  border-b-2 py-8 px-4`}
-        style={{ backgroundColor: isChat ? "hwb(240deg 97% 3%)" : "white" }}
+        // style={{ backgroundColor: isChat ? "hwb(240deg 97% 3%)" : "white" }}
       >
         <div className="flex text-txt-main w-full justify-between gap-4 ">
           {!isChat ? (
