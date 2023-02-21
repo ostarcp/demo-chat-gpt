@@ -12,40 +12,33 @@ const QandAItem = (props: {
   return (
     <>
       <div
-        className={`w-full my-2 flex ${
+        className={`w-full flex ${
           isChat ? "justify-start" : "justify-end"
-        }`}
+        }  border-b-2 py-8 px-4`}
+        style={{ backgroundColor: isChat ? "hwb(240deg 97% 3%)" : "white" }}
       >
-        <div className="flex text-txt-main md:w-3/4 w-full justify-between gap-4 border border-primary rounded-md p-4">
-          {isChat ? (
-            <>
-              <div className="avatar">{icons.logo}</div>
-              <div
-                className={`flex-1 content-text overflow-x-auto text-left dark:text-white ${
-                  isLoading ? styles.typewriter : ""
-                }`}
-              >
-                <span
-                  className={
-                    content === "ERROR! please try again later"
-                      ? "text-red-500 uppercase font-bold"
-                      : ""
-                  }
-                >
-                  {content}
-                </span>
-                {/* <PreviewCode language={"Javascript"} code={content} /> */}
-              </div>
-            </>
+        <div className="flex text-txt-main w-full justify-between gap-4 ">
+          {!isChat ? (
+            <div className="avatar w-20">{icons.userIcon}</div>
           ) : (
-            <>
-              <div className="flex-1 content-text overflow-x-auto text-left dark:text-white">
-                {content || ""}
-              </div>
-            </>
+            <div className="avatar w-20">{icons.logoSm}</div>
           )}
-
-          {!isChat ? <div className="avatar">{icons.userIcon}</div> : null}
+          <div
+            className={`flex-1 content-text overflow-x-auto text-left dark:text-white ${
+              isLoading ? styles.typewriter : ""
+            }`}
+          >
+            <span
+              className={
+                content === "ERROR! please try again later"
+                  ? "text-red-500 uppercase font-bold"
+                  : ""
+              }
+            >
+              {content}
+            </span>
+            {/* <PreviewCode language={"Javascript"} code={content} /> */}
+          </div>
         </div>
       </div>
     </>

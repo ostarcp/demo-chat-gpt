@@ -1,11 +1,13 @@
+import { log } from "console";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { uid } from "uid";
 import Hero from "../components/Hero";
 import Input from "../components/Input";
 import QandAItem from "../components/QandAItem";
 import { useStoreContext } from "../providers/StoreProvider";
+import { isEmpty } from "../utils/helper";
 
 const PAGE_ID = uid(16);
 
@@ -19,10 +21,18 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [qAndA?.length]);
+  }, [qAndA?.length, loading]);
 
   const isNewChat = route.pathname === "/";
   const isEmptyQandA = qAndA?.length === 0;
+
+  const listAnswer =
+    useMemo(() => {
+      return qAndA?.reduce?.((acc: string, current, index) => {
+        return isEmpty(acc) ? current.q : (acc = acc + " ," + current.q);
+      }, "");
+    }, [qAndA.length]) ?? "";
+
 
   const onChangeText = (e: any) => {
     const txt = e.target.value;
@@ -49,7 +59,10 @@ const Home: NextPage = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          prompt: text,
+          prompt: isEmpty(listAnswer)
+            ? text
+            : `here is my previous question ${listAnswer} that i wrap each question in [] and i would like to ask about ` +
+              text,
         }),
       });
 
@@ -109,7 +122,7 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center px-4">
+    <div className="flex flex-col items-center">
       {isEmptyQandA ? (
         <>
           <Hero />

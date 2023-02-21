@@ -38,32 +38,32 @@ export default function NavBar() {
       <div className="drawer-side">
         <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
 
-        <ul className="menu p-6 w-80 bg-dark text-base-content ">
-          <Link href={"/"}>
-            <div className="logo mb-14 cursor-pointer">{icons.logo}</div>
-          </Link>
-          <div className="overflow-y-auto h-fit">
-            {store?.map?.((item) => (
-              <li key={`${item.id}-link-a`}>
-                <a
-                  href={`/${item.id}`}
-                  className={`${LI_STYLE} ${
-                    route?.query?.id === item?.id ? "bg-active" : null
-                  }`}
-                >
-                  {icons.messageNav} {item?.qAndA?.[0]?.q}
-                </a>
-              </li>
-            ))}
-            
+        <ul className="menu p-6 w-80 bg-dark text-base-content flex justify-between ">
+          <div className="flex-1">
+            <Link href={"/"}>
+              <div className="logo mb-14 cursor-pointer">{icons.logo}</div>
+            </Link>
+            <div className="max-h-48 overflow-y-auto h-fit">
+              {store?.map?.((item) => (
+                <li key={`${item.id}-link-a`}>
+                  <a
+                    href={`/${item.id}`}
+                    className={`${LI_STYLE} ${
+                      route?.query?.id === item?.id ? "bg-active" : null
+                    }`}
+                  >
+                    {icons.messageNav} {item?.qAndA?.[0]?.q}
+                  </a>
+                </li>
+              ))}
+            </div>
+            <div className="mt-8" />
+            <Link href={"/"}>
+              <Button title="New chat" icon={icons.plusIcon} />
+            </Link>
+
+            <div className="divider"></div>
           </div>
-          <div className="mt-8" />
-
-          <Link href={"/"}>
-            <Button title="New chat" icon={icons.plusIcon} />
-          </Link>
-
-          <div className="divider"></div>
 
           <li>
             {!toggleDelete ? (
@@ -72,8 +72,12 @@ export default function NavBar() {
               </a>
             ) : (
               <li className="flex flex-row justify-evenly p-0">
-                <a className={LI_STYLE} onClick={onClearConversation}>YES</a>
-                <a className={LI_STYLE} onClick={toggleClear}>NO</a>
+                <a className={LI_STYLE} onClick={onClearConversation}>
+                  YES
+                </a>
+                <a className={LI_STYLE} onClick={toggleClear}>
+                  NO
+                </a>
               </li>
             )}
             <a className={LI_STYLE} onClick={setAppTheme}>

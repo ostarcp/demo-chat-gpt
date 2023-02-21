@@ -23,7 +23,6 @@ const DefaultLayout: React.FC<DefaultLayoutI> = ({ children }) => {
               </div>
             </label>
 
-            <img className="w-8" src="../avatar.png" />
           </div>
 
           <main className="w-full">{children}</main>
