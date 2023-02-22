@@ -1,8 +1,4 @@
-import React, {
-  createContext,
-  ReactNode,
-  useEffect, useState
-} from "react";
+import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { isEmpty } from "../utils/helper";
 
 type Store = {
@@ -10,7 +6,15 @@ type Store = {
   qAndA: { id: string; q: string; a: string }[];
 };
 
+type Config = {
+  webAccess: boolean;
+  numWebResults: number;
+  timePeriod: string;
+  region: string;
+};
+
 const USER_LOCAL_STORAGE = "U2CHATMENU";
+const USER_CONFIG_STORAGE = "U2CHATUSERCONFIG";
 
 const getUserLocalStorage = () => {
   const dataUser = localStorage.getItem(USER_LOCAL_STORAGE);
@@ -24,6 +28,18 @@ const saveUserLocalStorage = (storeData: any) => {
   localStorage.setItem(USER_LOCAL_STORAGE, JSON.stringify(storeData));
 };
 
+const getUserConfigLocalStorage = () => {
+  const dataUser = localStorage.getItem(USER_CONFIG_STORAGE);
+  if (!!dataUser) {
+    return JSON.parse(dataUser);
+  }
+  return {};
+};
+
+const saveUserConfigLocalStorage = (storeData: any) => {
+  localStorage.setItem(USER_CONFIG_STORAGE, JSON.stringify(storeData));
+};
+
 interface IStoreContext {
   setStore: (data: any) => void;
   updateStoreById: (id: string, data: any[]) => void;
@@ -31,6 +47,8 @@ interface IStoreContext {
   deleteStore: () => void;
   deleteStoreById: () => void;
   getStoreVal: (id: string) => any;
+  userConfig: Config;
+  saveConfig: (data: Config) => void;
 }
 
 export const StoreContext = createContext<IStoreContext>({
@@ -40,6 +58,13 @@ export const StoreContext = createContext<IStoreContext>({
   deleteStore: () => {},
   deleteStoreById: () => {},
   getStoreVal: () => {},
+  userConfig: {
+    webAccess: false,
+    numWebResults: 3,
+    region: "wt-wt",
+    timePeriod: "",
+  },
+  saveConfig: (data: Config) => {},
 });
 
 export const useStoreContext = () => React.useContext(StoreContext);
@@ -47,19 +72,38 @@ export const useStoreContext = () => React.useContext(StoreContext);
 const StoreProvider = ({ children }: { children: ReactNode }) => {
   //! State
   const localStoreData = getUserLocalStorage();
+  const userConfigData = getUserConfigLocalStorage();
   const [storeData, setStoreData] = useState<Store[]>(localStoreData || []);
+  const [userConfig, setUserConfig] = useState<Store>(
+    userConfigData || {
+      webAccess: false,
+      numWebResults: 3,
+      region: "wt-wt",
+      timePeriod: "",
+    }
+  );
 
   const setStore = React.useCallback((data: any) => {
     setStoreData(data);
     saveUserLocalStorage(data);
   }, []);
 
+  const saveConfig = React.useCallback((data: any) => {
+    setUserConfig(data);
+    saveUserConfigLocalStorage(data);
+  }, []);
+
   useEffect(() => {
     if (!isEmpty(localStoreData)) {
-
       setStore(localStoreData);
     }
   }, [setStore]);
+
+  useEffect(() => {
+    if (!isEmpty(userConfigData)) {
+      saveConfig(userConfigData);
+    }
+  }, [saveConfig]);
 
   const getStoreVal = React.useCallback(
     (id: string) => {
@@ -103,8 +147,10 @@ const StoreProvider = ({ children }: { children: ReactNode }) => {
       deleteStore,
       deleteStoreById,
       getStoreVal,
+      userConfig,
+      saveConfig,
     };
-  }, [setStore, storeData, updateStoreById, deleteStoreById]);
+  }, [setStore, storeData, updateStoreById, deleteStoreById, userConfig]);
 
   //! Return
   return (

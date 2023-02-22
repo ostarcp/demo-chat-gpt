@@ -6,8 +6,10 @@ import { uid } from "uid";
 import Hero from "../components/Hero";
 import Input from "../components/Input";
 import QandAItem from "../components/QandAItem";
+import Toolbar from "../components/Toolbars";
 import { useStoreContext } from "../providers/StoreProvider";
 import { isEmpty } from "../utils/helper";
+// import { searchWithPropt } from "../utils/OpenAIStream";
 
 const PAGE_ID = uid(16);
 
@@ -15,9 +17,12 @@ const Home: NextPage = () => {
   const [loading, setLoading] = useState(false);
   const [text, setText] = useState("");
   const [qAndA, setQandA] = useState<any[]>([]);
-  const { store, setStore, getStoreVal, updateStoreById } = useStoreContext();
+  const { store, setStore, getStoreVal, updateStoreById, userConfig } =
+    useStoreContext();
   const route = useRouter();
   const bottomRef = useRef<any>(null);
+
+  console.log(store);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -33,7 +38,6 @@ const Home: NextPage = () => {
       }, "");
     }, [qAndA.length]) ?? "";
 
-
   const onChangeText = (e: any) => {
     const txt = e.target.value;
     setText(txt);
@@ -44,15 +48,13 @@ const Home: NextPage = () => {
     setText("");
     setLoading(true);
 
+    const qAndAObj = {
+      id: new Date().getTime(),
+      q: text,
+      a: "",
+    };
+
     try {
-      const qAndAObj = {
-        id: new Date().getTime(),
-        q: text,
-        a: "",
-      };
-
-      setQandA((pre: any) => [...pre, qAndAObj]);
-
       const response = await fetch("/api/generate", {
         method: "POST",
         headers: {
@@ -61,7 +63,7 @@ const Home: NextPage = () => {
         body: JSON.stringify({
           prompt: isEmpty(listAnswer)
             ? text
-            : `here is my previous question ${listAnswer} that i wrap each question in [] and i would like to ask about ` +
+            : `Here is my previous questions ${listAnswer} and i would like to ask about ` +
               text,
         }),
       });
@@ -151,6 +153,7 @@ const Home: NextPage = () => {
             onClick={askTheAI}
             isLoading={loading}
           />
+          <Toolbar />
         </div>
       </div>
     </div>

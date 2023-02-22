@@ -13,12 +13,12 @@ const Home: NextPage = () => {
   const [loading, setLoading] = useState(false);
   const [text, setText] = useState("");
   const [qAndA, setQandA] = useState<any[]>([]);
-  const { store, getStoreVal, updateStoreById } = useStoreContext();
+  const { getStoreVal, updateStoreById } = useStoreContext();
   const route = useRouter();
   const bottomRef = useRef<any>(null);
 
   const ID = (route.query.id as string) || "";
-  
+
   const listAnswer =
     useMemo(() => {
       return qAndA?.reduce?.((acc: string, current, index) => {
@@ -64,7 +64,7 @@ const Home: NextPage = () => {
         body: JSON.stringify({
           prompt: isEmpty(listAnswer)
             ? text
-            : `here is my previous question [${listAnswer}] that i wrap each question in [] and i would like to ask about ` +
+            : `Here is my previous questions ${listAnswer} and i would like to ask about ` +
               text,
         }),
       });
