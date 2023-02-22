@@ -105,8 +105,8 @@ const Home: NextPage = () => {
           const idx = preCopy.findIndex(
             (item: any) => item.id === qAndAObj?.id
           );
-          preCopy[idx].a += chunkValue;
 
+          preCopy[idx].a = preCopy[idx].a + chunkValue;
           return preCopy;
         });
       }

@@ -22,8 +22,6 @@ const Home: NextPage = () => {
   const route = useRouter();
   const bottomRef = useRef<any>(null);
 
-  console.log(store);
-
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [qAndA?.length, loading]);
@@ -55,6 +53,7 @@ const Home: NextPage = () => {
     };
 
     try {
+      setQandA((pre: any) => [...pre, qAndAObj]);
       const response = await fetch("/api/generate", {
         method: "POST",
         headers: {
@@ -104,8 +103,8 @@ const Home: NextPage = () => {
           const idx = preCopy.findIndex(
             (item: any) => item.id === qAndAObj?.id
           );
-          preCopy[idx].a += chunkValue;
 
+          preCopy[idx].a = preCopy[idx].a + chunkValue;
           return preCopy;
         });
       }

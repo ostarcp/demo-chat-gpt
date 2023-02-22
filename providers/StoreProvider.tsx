@@ -21,7 +21,7 @@ const getUserLocalStorage = () => {
   if (!!dataUser) {
     return JSON.parse(dataUser);
   }
-  return {};
+  return [];
 };
 
 const saveUserLocalStorage = (storeData: any) => {
